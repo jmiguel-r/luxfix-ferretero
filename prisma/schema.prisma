@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")      // pooled (pgbouncer) — para queries
+  directUrl = env("POSTGRES_URL_NON_POOLING") // directo — para migraciones
+}
+
+model Category {
+  id        String     @id @default(cuid())
+  name      String
+  slug      String     @unique
+  parentId  String?
+  parent    Category?  @relation("SubCategories", fields: [parentId], references: [id])
+  children  Category[] @relation("SubCategories")
+  products  Product[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model StoreSettings {
+  id                 String   @id @default("singleton")
+  storeName          String   @default("LuxFix Ferretero")
+  email              String   @default("contacto@luxfix.mx")
+  phone              String   @default("")
+  currency           String   @default("MXN")
+  description        String   @default("")
+  theme              String   @default("dark-gold")
+  notifyLowStock     Boolean  @default(true)
+  notifyNewOrders    Boolean  @default(true)
+  notifyWeeklyReport Boolean  @default(false)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  price       Float
+  stock       Int      @default(0)
+  imageUrl    String?
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

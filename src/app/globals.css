@@ -1,26 +1,88 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f4f4f5; /* Light gray background for clean look */
+  --foreground: #171717; /* Very dark gray text */
+
+  /* Brand Colors */
+  --brand-primary: #000000; /* Pure black */
+  --brand-secondary: #2A2A35; /* Oxford Gray */
+  --brand-accent: #F5A623; /* Beaver Yellow/Orange */
+
+  /* UI Colors based on brand */
+  --primary: var(--brand-primary);
+  --primary-foreground: #ffffff;
+  
+  --secondary: var(--brand-secondary);
+  --secondary-foreground: #ffffff;
+  
+  --accent: var(--brand-accent);
+  --accent-foreground: #000000;
+
+  --muted: #e4e4e7;
+  --muted-foreground: #71717a;
+
+  --border: #d4d4d8;
+  --input: #d4d4d8;
+  --ring: var(--brand-accent);
+
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: #09090b;
+  --foreground: #fafafa;
+
+  --primary: #ffffff;
+  --primary-foreground: #000000;
+
+  --secondary: #27272a;
+  --secondary-foreground: #fafafa;
+
+  --accent: var(--brand-accent);
+  --accent-foreground: #000000;
+
+  --muted: #27272a;
+  --muted-foreground: #a1a1aa;
+
+  --border: #27272a;
+  --input: #27272a;
+  --ring: var(--brand-accent);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  
+  /* Brand Colors matching the Beaver Mascot */
+  --color-brand-primary: #1e3a8a; /* Navy Blue (Uniform) */
+  --color-brand-secondary: #172554; /* Dark Navy (Backgrounds) */
+  --color-brand-accent: #facc15; /* Yellow (Hard Hat) */
+  --color-brand-brown: #a16207; /* Brown (Beaver Fur) */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-primary: var(--color-brand-primary);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--color-brand-secondary);
+  --color-secondary-foreground: #ffffff;
+  --color-accent: var(--color-brand-accent);
+  --color-accent-foreground: #000000;
+  
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--color-brand-accent);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
