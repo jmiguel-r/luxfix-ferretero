@@ -1,5 +1,10 @@
-import "dotenv/config";
+import dotenv from "dotenv";
 import { defineConfig } from "prisma/config";
+
+// .env.local tiene prioridad (credenciales de Vercel/Neon en local)
+dotenv.config({ path: ".env.local" });
+// .env como fallback (DATABASE_URL local para SQLite en dev puro)
+dotenv.config();
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
