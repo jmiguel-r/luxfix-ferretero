@@ -3,16 +3,24 @@ import { defineConfig } from "prisma/config";
 
 // .env.local tiene prioridad (credenciales de Vercel/Neon en local)
 dotenv.config({ path: ".env.local" });
-// .env como fallback (DATABASE_URL local para SQLite en dev puro)
+// .env como fallback
 dotenv.config();
+
+// En build de Vercel, POSTGRES_URL_NON_POOLING puede no estar disponible.
+// Usamos POSTGRES_PRISMA_URL como fallback ya que prisma generate no necesita conexión real.
+const dbUrl =
+  process.env["POSTGRES_URL_NON_POOLING"] ??
+  process.env["POSTGRES_PRISMA_URL"] ??
+  process.env["DATABASE_URL"];
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
   },
-  datasource: {
-    // URL directa (sin pgbouncer) para migraciones y db push
-    url: process.env["POSTGRES_URL_NON_POOLING"] ?? process.env["DATABASE_URL"],
-  },
+  ...(dbUrl && {
+    datasource: {
+      url: dbUrl,
+    },
+  }),
 });
